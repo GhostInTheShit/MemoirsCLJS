@@ -160,3 +160,63 @@ Request
 [Endpoint]                → 最终处理（Controller / Minimal API）
 
 ```
+
+## 异常中间件 
+
+UseExceptionHandler
+
+```C#
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{   
+    //出现了错误就显示该页面
+    app.UseExceptionHandler("/Home/Error");
+}
+```
+
+```C#
+[Route("[action]")]
+public ActionResult Error()
+{
+    //在httpcontext.Features查看是否有异常
+    var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+    if (exceptionHandlerPathFeature!=null&&exceptionHandlerPathFeature.Error!=null)
+    {
+        //有的话就设置ViewData.
+        ViewBag.ErrorMessage=exceptionHandlerPathFeature.Error.Message;
+    }
+    return View();
+}
+```
+
+
+
+### 自定义异常中间件 
+自定义异常中间件,不过不太使用,因为内置的已经够好了.(跟着教程写的时候发现结果不能实现)
+```C#
+public class ExceptionHandingMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public ExceptionHandingMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task Invoke(HttpContext context)
+    {
+        try
+        {
+            await _next(context); 
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+}
+```

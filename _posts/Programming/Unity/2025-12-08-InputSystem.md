@@ -84,6 +84,63 @@ Action Properties
 *   Value 
 *   Pass Through 
 
-## 常用方法
+## Mouse
 
 `Mouse.current.position.ReadValue()` 鼠标当前的位置
+
+### 右键拖动鼠标
+
+Action Maps -> Player ,Actions -> Look , Look -> `add Binding With One Modifier`.
+
+`Modifier` -> `Mouse Right Button`
+
+`Binding` -> `Mouse delta`
+
+modifier其实就是修饰符,比如`ctrl+s`,`ctrl`就是.
+
+```C#
+public class CameraManager : MonoBehaviour
+{
+    //本身摄像机
+    public GameObject Camera;
+    //Actions
+    public PlayerControls playerControl;
+
+    private void Awake()
+    {
+        instance = this;
+        //创建Action脚本
+        playerControl=new PlayerControls();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        CameraMove();
+    }
+
+    void CameraMove()
+    {
+        Vector2 vector2 = playerControl.Player.Look.ReadValue<Vector2>();
+        transform.position += new Vector3(vector2.x,vector2.y)*0.3f;
+        
+        if(transform.position.x<-20) transform.position = new Vector3(-20, transform.position.y, transform.position.z);
+        if (transform.position.x > 20) transform.position = new Vector3(20, transform.position.y, transform.position.z);
+
+        if (transform.position.y < -10) transform.position = new Vector3(transform.position.x, -10, transform.position.z);
+        if (transform.position.y > 20) transform.position = new Vector3(transform.position.x, 20, transform.position.z);
+    }
+
+    private void OnEnable()
+    {
+        //启动，默认是关闭的.
+        playerControl.Player.Enable();
+    }
+
+    private void OnDisable()
+    {
+        //关闭
+        playerControl.Player.Disable();
+    }
+}
+```
