@@ -1,3 +1,47 @@
+---
+categories: js
+---
+
+# JavaScript
+
+使网页有交互性.
+
+`ECMAScript` 脚本语言的标准规范,简称`ES`,为了防止浏览器大战.`JS`遵从`ES`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details>
+<summary>过时版本</summary>
+
 # JavaScript
 
 - `constructor()` 构造器方法,是个关键字
@@ -47,3 +91,4 @@ onclick调用的方法为直接调用.this为Window(严格模式为undefined)
 ----
 javacript 感觉不太规范，有点乱  
 可能ES6之后的好一点
+</details>
