@@ -9,6 +9,57 @@ categories: js
 `ECMAScript` 脚本语言的标准规范,简称`ES`,为了防止浏览器大战.`JS`遵从`ES`
 
 
+内部javascript 无法在html中共享
+```html
+<script>
+    //your code
+</script>
+```
+
+外部javascript ,`filename.js`
+```html
+<script src=""filename.js>
+</script>
+```
+
+## node.js
+
+大致为js的虚拟机,内部为V8引擎
+
+使用node.js ,可以在浏览器之外执行js,命令行
+
+`https://nodejs.org/en` 官网下载,不需要`Chocolatey`
+
+## JS语法
+
+弱类型,不能固定类型.默认值为`undefined`,不会报错.
+
+`Hoisting` 变量提升
+
+**会将声明提到第一行,但赋值则不改变顺序.  
+但是const和let会被锁定不能被访问,而var不会.  
+这是ES6的保护机制,提醒你不要在声明前使用变量.  
+所以优先使用const和let.**
+
+**var是函数作用域,它在括号外面也能使用.const和let是块级作用域**
+
+```js
+//这里x为undefined.
+console.log("Statement 1",x);
+//y会报错
+console.log("Statement 1",y);
+//a也会导致报错
+console.log("Statement 1",a);
+
+var x=1;
+//优先使用let和const
+let y=1;
+const a=1;
+```
+
+
+
+
 
 
 
