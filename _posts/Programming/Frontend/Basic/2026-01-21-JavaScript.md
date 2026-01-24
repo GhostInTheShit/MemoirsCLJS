@@ -43,6 +43,9 @@ categories: js
 
 **var是函数作用域,它在括号外面也能使用.const和let是块级作用域**
 
+>[!warning]
+>var在for循环的使用中会导致闭包问题,
+
 ```js
 //这里x为undefined.
 console.log("Statement 1",x);
@@ -57,14 +60,89 @@ let y=1;
 const a=1;
 ```
 
+`arguments` 内置关键字,是个伪数组,有些方法没有,所有参数.
+>[!important]
+>js默认能接收多个参数,没有被赋值的为undefined,不会报错.
+
+```js
+let method =function(a,b){
+    console.log(a);
+    console.log(b);
+    console.log(arguments[2]);
+}
+
+method(1);
+method(1,2,3);
+
+/* 
+输出
+1
+undefined
+undefined
+1
+2
+3
+*/
+```
+
+`...arg` 剩余参数的数组
+```js
+//...b表示剩余的参数
+let method =function(a,...b){
+    console.log(a);
+    //输出数组
+    console.log(b);
+    //会将数组展开
+    console.log(...b);
+}
+method(1,2,3);
+
+/* 输出
+1
+[ 2, 3 ]
+2 3
+*/
+```
+
+`setTimeout(callBackFunction,milliseconds)` 在多少秒之后执行回调函数.
+
+`setInterval(callBackFunction,milliseconds)` 每多少秒执行回调函数.
+
+`clearInterval(setIntervalFuction)`  用于停止由 setInterval() 启动的重复定时器。
+```js
+const intervalId = setInterval(() => {
+  console.log("每秒执行一次");
+}, 1000);
+
+// 例如：5 秒后停止
+setTimeout(() => {
+  clearInterval(intervalId);
+  console.log("定时器已停止");
+}, 5000);
+```
 
 
+### 对象
 
+用大括号表示,和JSon有点像.但是JSon两边都要用`""`
+```js
+{a:10,b:function(){}}
+```
 
+`this` 当前对象,在`function`里面为`function`对象,在外面默认为`{}`
 
+这里的对象不是类,有点像字典.
+```JS
+var employee={
+    firstName:"Bob",
+    getName:function(){
+        //这里必须写this要不然报错,它得不到外面的属性.
+        return this.firstName;
+    }
+};
 
-
-
+console.log(employee.getName());
+```
 
 
 
