@@ -380,22 +380,151 @@ let a=function(){
 
 简单的说**被暴露出来的的函数能够保留其作用域的私有变量的引用且使用**
 
+### 函数
+
+`Object.keys()` 读取某个对象的keys,以字符串数组返回.
+
+### 类，语法糖,内部也是原型对象
+
+```js
+class Person{
+    Name;
+    Age;
+    
+    //前面加#则是私有属性(以#为开头的是私有,属性名带#),不加为公共.
+    //可以写Get和Set方法
+    #salary;
+
+    //构造器
+    constructor(PName){
+        this.Name=PName;
+        this.Age=22;
+        this.#salary=1000;
+    }
+
+    GetPerson(){
+        return this.Name+"-"+this.Age+"-"+this.#salary;
+    }
+}
+
+let p=new Person("Bob");
+console.log(p.GetPerson());
+
+//会直接报错
+//console.log(p.#salary);
+```
+
+`get`和`set` ,语法糖.和正常的get和set方法有一点点不同.
+```js
+class Person{
+    #Name;
+    #Age;
+    #salary;
+
+    //有点类似于RESTFul
+    //调用的时候直接像属性一样使用
+    set Person(Name){
+        this.Name=Name;
+    }
+    get Person(){
+        return this.Name;
+    }
+
+}
+
+let p=new Person();
+p.Person="Bob";
+console.log(p.Person);
+```
+
+`extends` 继承 ,**子类有父类的属性和方法,父类为空类**
+
+子类的构造器里一定要调用父类构造器`super();`
+
+子类的`__proto__`为父类.
+
+```js
+class Person{
+    #Name;
+    Age=10;
+    #salary;
+}
+
+class man extends Person{
+    #gender;
+
+    getPerson(){
+        return this.Age;
+    }
+}
+
+let p=new Person();
+let m=new man();
+
+console.log(m);
+console.log(m.__proto__);
+console.log(m.getPerson());
+```
+
+输出
+```js
+//man { Age: 10 }
+//Person {}
+//10
+```
+
+抽象类
+```js
+class Person{
+    constructor()
+    {
+        //检测是否由person的构造函数创建.
+        if(this.constructor==Person)
+        {
+            throw new Error("no");
+        }
+    }
+}
+
+class man extends Person{
+    constructor()
+    {
+        super();
+    }
+}
+
+let m=new man();
+
+//会报错
+//let p =new Person();
+```
+
+`static` 静态,和别的语言一样.
+
+### 数组
+
+`push()` 在数组最后面加入一个数据
+
+`pop()` 移除最后一个数据
 
 
+`splice(index,count)` 从索引为index的数据开始删除count个
 
+`splice(index,count,value)` 从索引为index的数据开始删除count个,并且插入value数据
 
+`concat` 连接两个数组
 
+`every(function(element){return element>=100;})` 遍历数组,执行条件检测,需要每个都通过才能true,类似LINQ`All()`,也可以用lambda.
 
+`some(function(element){return condition})` 遍历检测,只要有一个通过,类似于C#`Any()`.
 
+`filter(function(element){return condition})` 遍历检测,通过会保留,返回一个新数组.
 
+`find(function(element){return condition})` 遍历检测.返回第一个匹配的.
 
+`findIndex(function(element){return condition})` 遍历检测，返回第一个匹配的索引.
 
-
-
-
-
-
-
+`foreach(function(element){return condition})` 每个元素都执行方法.
 
 <details>
 <summary>过时版本</summary>
