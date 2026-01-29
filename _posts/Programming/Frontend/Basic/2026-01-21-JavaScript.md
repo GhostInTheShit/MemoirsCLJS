@@ -85,7 +85,9 @@ undefined
 */
 ```
 
-`...arg` 剩余参数的数组，如果在解析对象的时候则包装为为对象.
+-----------------------------------
+
+`...arg` 在函数中,剩余参数的数组，如果在解析对象的时候则包装为为对象.
 ```js
 //...b表示剩余的参数
 let method =function(a,...b){
@@ -103,6 +105,8 @@ method(1,2,3);
 2 3
 */
 ```
+
+-----------------------------
 
 `setTimeout(callBackFunction,milliseconds)` 在多少秒之后执行回调函数.
 
@@ -258,7 +262,9 @@ for(let prop in person){
 }
 ```
 
-解析符`{}`
+------------------------------
+
+解析符 在`=`左边的`{}`.
 ```js
 let person={
     Name:"bob",
@@ -295,6 +301,30 @@ let fun1 =function({Name,age}){
 
 fun1(person);
 ```
+
+扩展符 在`=`右边的`{}`
+
+对象扩展符号,复制并且可以修改
+```js
+let a={Name:"Bob",Age:12};
+
+var a2={...a,Name:"All"};
+
+//{ Name: 'All', Age: 12 }
+console.log(a2);
+```
+
+数组扩展符号,复制并且可以修改(写完才发现一样)
+```js
+let a=[1,2,3,4];
+
+var a2=[...a,5];
+console.log(a2);
+
+//[ 1, 2, 3, 4, 5 ]
+```
+
+
 
 -------------------------------
 
@@ -501,6 +531,34 @@ let m=new man();
 
 `static` 静态,和别的语言一样.
 
+`typeof value` 数据类型,`undefined`也是一个数据类型.
+
+`typeof()` 数据类型,`undefined`也是一个数据类型.
+
+`undefined` vs `null` ,前者为默认的空值,后者为显示的空置.
+
+`==` vs `===` 比较数值和数据类型.`==`默认会转换数据类型
+```js
+let a3=2;
+let a4="2";
+
+//true
+console.log(a3==a4);
+```
+
+`string()` 转换为`string`
+
+`toString()` 转换为`string`
+
+`Number()` 转换为`Number` ,如果转换不了会`NaN`,也是Number类型
+
+`parseInt()` 转换string为Int，不能有小数.如果以数字开头,就会将后面不能转化的忽略,如果字母开头`NaN`.
+
+`parseFloat()` 转化为float,可以有小数位。
+
+`+"20"` 一元运算,会强制变成number,一元是指`+`没有左边的那种情况.
+
+
 ### 数组
 
 `push()` 在数组最后面加入一个数据
@@ -525,6 +583,78 @@ let m=new man();
 `findIndex(function(element){return condition})` 遍历检测，返回第一个匹配的索引.
 
 `foreach(function(element){return condition})` 每个元素都执行方法.
+
+`includes(value);` 是否包括某个值.
+
+`indexOf(value)` 某个值的索引,`-1`为未找到.
+
+`map(function(element){return element;})` 执行且返回值,类似C# LINQ select
+
+`flatMap(function(element){return array})` 一对多的map,可以返回多个元素,但是是扁平化的.
+
+`flat(int)` 扁平化,默认一层,可以填入参数几层.
+
+`reverse()` 数组反转
+
+`slice(startIndex,endIndex)` 索引裁剪. 
+
+`sort(function(a,b){return 0})` 返回负数为a在前面,0不变,正数b在前面.如果是数字可以直接理解为`a-b`
+
+### 数据函数
+
+`toFixed(int)` 将数字后面几位小数显示出来.比如`10.00`,实际上是字符串.
+
+`toUpperCase()` 字符串大写
+
+`toLowerCase()` 字符串小写
+
+`length` 是一个属性.字符串的长度.
+
+`charAt(int)` 字符串第几个索引的字符.
+
+`charCodeAt(int)` 返回第几个索引的字符的ASCII.
+
+~~`substr()` 子字符串.被废弃~~ 建议用`slice()`
+
+`indexOf(char)` 该字符在字符串的第几个索引
+
+`lastIndexOf(char)` 该字符在字符串的第几个索引,但是是倒数索引.
+
+`replace()` 替换字符.
+
+`split(char)` 拆分为数组
+
+`trim()` 去除最左和最右侧空格
+
+`concat()` 连接
+
+--------------------------------
+
+Date对象
+
+`new Date()` 返回一个对象,里面有关于日期的信息.这其实是一个构造函数.
+
+Date的函数
+
+`toLocaleDateString()` 将`new Date()`的年月日返回为一种时间字符串,`m/d/y`
+
+`toLocaleTimeString()` 将`new Date()`的小时分钟秒返回为string.
+
+`getTime()` 从`1970`年的那天到现在的`millsec`
+
+`getDay()` 返回今天是星期几,0是星期日,1是星期一.
+
+`getDate(),getMonth(),getFullYear()` 获得单独的日期,月份,年份.
+
+`getHours(),getMinutes,getSecondes(),getMilliseconds()` 单独获取小时,分,秒,微妙
+
+自定义日期
+
+`setFullYear(year),setMonth(month)` 等等函数.
+
+## Dom
+
+网页中的树结构
 
 <details>
 <summary>过时版本</summary>
