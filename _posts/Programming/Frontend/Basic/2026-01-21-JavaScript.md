@@ -656,6 +656,37 @@ Date的函数
 
 网页中的树结构
 
+-----------------
+window 整个浏览器,包含DOM和地址栏,工具栏,状态栏
+
+`location.href` 地址
+
+`navigator.userAgent` 浏览器名称
+
+`screen` `screen.X``screen.Y` 浏览器在当前屏幕的位置.
+
+`alert()`
+
+`confirm()`
+
+`print()`
+
+`setTimeout()`
+
+`setInterval()`
+
+`ScrollTo()`
+
+`open()`
+
+------------------
+DOM 包含Element
+
+-----------------------
+Element
+
+
+
 <details>
 <summary>过时版本</summary>
 
