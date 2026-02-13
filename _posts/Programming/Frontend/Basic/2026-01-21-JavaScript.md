@@ -665,25 +665,26 @@ window 整个浏览器,包含DOM和地址栏,工具栏,状态栏
 
 `screen` `screen.X``screen.Y` 浏览器在当前屏幕的位置.
 
-`alert()`
+`alert()` 窗口对话框,只有确定按钮
 
-`confirm()`
+`confirm()` 窗口对话框,有确定和取消按钮.有返回值true和false.
 
-`print()`
+`print()` 打印页面
 
-`setTimeout()`
+`setTimeout(functionName,1000)` 一秒后执行指定函数 
 
-`setInterval()`
+`setInterval(functionName,1000)` 每一秒执行指定函数
 
-`ScrollTo()`
+`ScrollTo(x,y)` 设置x,y滚动 
 
-`open()`
+`open("xxx.html","x","width=300,height=300")` 打开某个网页(另一个浏览器窗口),x为逻辑名称.可以设置大小.
 
 ------------------
 DOM 包含Element
 
 -----------------------
 Element
+
 
 
 
