@@ -656,8 +656,8 @@ Date的函数
 
 网页中的树结构
 
------------------
-window 整个浏览器,包含DOM和地址栏,工具栏,状态栏
+
+### window 整个浏览器,包含DOM和地址栏,工具栏,状态栏
 
 `location.href` 地址
 
@@ -679,12 +679,80 @@ window 整个浏览器,包含DOM和地址栏,工具栏,状态栏
 
 `open("xxx.html","x","width=300,height=300")` 打开某个网页(另一个浏览器窗口),x为逻辑名称.可以设置大小.
 
-------------------
-DOM 包含Element
+### document
+
+document属性
+
+`document.title` 有title,head,body,images，links，URL
+
+`document.images` 网页中的所有图片
+
+`document.links` 网页中所有超链接
+
+`document.URL` 浏览器地址栏URL
 
 -----------------------
-Element
+document方法
 
+`document.getElementById("id")` 由Id选择特定元素
+
+`document.getElementsByName("name")` 由name选择元素,可以多个标签同名
+
+`document.getElementsByTagName("p")` 由标签名称获取元素.这里获取的是p.
+
+`document.getElementsByClassName("class")` 由类名获取元素.
+
+`document.querySelectorAll("")` 选择器,选择所有,.class1,#p1,p分别为选择类,选择id,选择标签.
+
+`document.querySelector("")` 只会选中第一个.
+
+`document.createElement("p")` 创建一个标签,这里为p标签.
+
+~~`document.write("")` 写一句话,几乎从不使用~~
+
+### Element
+
+要先获得Element
+
+`tagName` 获得标签名
+
+`id` 获得id
+
+`innerHTML` 标签里面的内容,包括嵌套标签,可以修改
+
+`innerText` 标签里面的文本,可以修改
+
+`style` 可以直接设置样式
+
+`parentElement` 获得父元素
+
+`children` 获得子元素,可以多个
+
+`scrollTop` 将有滚动条的元素设置滚动条值
+
+`setAttribute("src","ima.jpg")` 设置属性,就是在标签内的属性可以以这种方法设置,这里为给某个img标签设置src.
+
+`getAttribute("src")` 获得属性,这里为src.
+
+`removeAttribute("src")` 移除属性
+
+`attributes` 读取标签的所有属性,为键值对.name和value.
+
+`hasAttribute()` 检测是否有某个属性
+
+`focus()` 聚焦,只能给那些能聚焦的元素.
+
+`click()` 点击
+
+`remove()` 去除元素
+
+`appendChild()` 为某个标签添加子元素,一般要用`document.createElement("")`,然后再将其添加(在末尾).
+
+`insertBefore(newp,p3)` 将newp元素插到p3前面,这里必须用父元素插入(p3的父元素),
+
+### 事件
+
+`addEventListener()` 事件,任何鼠标或者键盘事件.将事件与函数关联起来.
 
 
 
