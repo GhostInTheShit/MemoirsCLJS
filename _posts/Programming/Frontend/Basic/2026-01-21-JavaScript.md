@@ -754,7 +754,43 @@ document方法
 
 `addEventListener()` 事件,任何鼠标或者键盘事件.将事件与函数关联起来.
 
+`addEventListener("eventName",functionName)`
 
+`click` 点击
+
+`dblclick` 双击
+
+`mouseover` 鼠标悬停
+
+`mouseout` 鼠标离开
+
+`mousemove` 鼠标移动
+
+`keyup` 键盘按键松开事件,能接收到文本，一般用来搜索
+
+`keypress` 键盘按下事件,如果是输入文本,则在文本进入之前执行,也就是说得不到最后输入的文本.**一般用来特定字符的判定**,用`event`得到`ascii码`.使用`event.preventDefault()`
+
+`focus` 焦点,各种文本框事件,鼠标进入.
+
+`blur` 失去焦点,各种文本框事件,鼠标退出.
+
+`change` 变更事件,修改文本框,选择单选按钮,选择复选框,选择了下拉列表某个选项.
+
+`contextmenu` 上下文事件,其实就是右键点击菜单.可以用`event.preventDefault()`禁用右键.
+
+```js
+//event 事件参数
+function sample(event)
+{
+    //event.target 当前事件元素
+    //event.pageX 浏览器x位置 
+    //event.pageY 浏览器y位置
+    //event.which 输入的ascii码
+    //event.preventDefault() 拒绝默认功能
+
+}
+
+```
 
 <details>
 <summary>过时版本</summary>
