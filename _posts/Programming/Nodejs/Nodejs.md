@@ -58,17 +58,25 @@ console.log(text+"-------------text");
 
 `readFileSync()` 同步的`readFile`
 
-`writeFile()`
+`writeFile()` 写入
+
+```js
+fs.writeFile("sample.txt",content,"utf-8",(error,data)=>
+    {
+
+    });
+
+```
 
 `writeFileSync()`
 
-`rename()`
+`rename("sample.txt","new.txt","utf-8",(error,data)=>{})` 重命名,没有同步
 
-`unlink()`
+`unlink("sample.txt",(error,data)=>{})` 删除文件
 
-`stat()`
+`stat("sample.txt",(error,data)=>{})` 查看文件信息
 
-`readdir()`
+`readdir("sample.txt",(error,data)=>{})` 读取文件夹,不会递归读取
 
 ## 包管理
 
