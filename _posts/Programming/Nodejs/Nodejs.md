@@ -11,7 +11,8 @@ categories: Nodejs
 
 `exports` 将某个变量暴露出去.是一个默认变量.
 
-`required("")` 获取某个模块的共享,返回值接收.`./为当前文件夹`,不写`./`则为`nodejs`默认模块.
+~~`required("")` 获取某个模块的共享,返回值接收.`./为当前文件夹`,不写`./`则为`nodejs`默认模块.~~  
+现在使用`import xx from "xxx"` ESM标准语法.导入包
 
 ```js
 //module1.js
@@ -78,11 +79,53 @@ fs.writeFile("sample.txt",content,"utf-8",(error,data)=>
 
 `readdir("sample.txt",(error,data)=>{})` 读取文件夹,不会递归读取
 
+### http模块,内置模块
+
+```js
+import http from 'http';
+
+var server = http.createServer((req,res) => {
+    //这里会输出两次,因为浏览器还会发送一个图标请求
+    console.log("request received");
+
+    //在浏览器上写入
+    res.write("hello world");
+    res.end();
+});
+
+server.listen(7070, () => {
+    //开启服务器时执行的函数
+    console.log('Server is running on port 7070');
+});
+```
+
+request
+
+`url` 属性,不带根地址
+
+`method` 属性,请求方法(GET等待)
+
+`headers` 属性，请求头
+
+respond
+
+`write()` 写入body
+
+`end()` 响应结束
+
+`setHeader("Content-type","text/html")` 设置响应头
+ 
+`writeHeader()` 写入状态码
+
+### querystring模块,内置 
+
 ## 包管理
 
 npm
 
 npx 局部安装
+
+`package.json` 包的信息,里面设置的依赖项会自动安装.可以用这个来下载依赖项目,在这个目录下 `npm install`. 会自动出现`package-lock.json` 防止你使用latest 导致的版本不一致.
 
 ## Next.js
 
