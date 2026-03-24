@@ -10,18 +10,20 @@ categories: ASP.net
 
 IServiceCollection : new一个,将类型注册进去。
 
-> `var services = new ServiceCollection();`
->
-> 用DefaultGreetingService来实现IGreetingService.
->
-> `services.AddSingleton<IGreetingService, DefaultGreetingService>();`
+```c#
+//创建一个服务集合
+var services = new ServiceCollection();
 
-IServiceProvider :
-用IServiceCollection创建一个提供者,再使用该提供者获得实例.
+//注册服务
+//用DefaultGreetingService来实现IGreetingService.
+services.AddSingleton<IGreetingService, DefaultGreetingService>();
 
-> `var serviceProvider = services.BuildServiceProvider();`
->
-> `var greetingService = serviceProvider.GetRequiredService<IGreetingService>();`
+//IServiceProvider IServiceCollection创建一个提供者,再使用该提供者获得实例.
+var serviceProvider = services.BuildServiceProvider();
+
+//从容器中获取
+var greetingService = serviceProvider.GetRequiredService<IGreetingService>();
+```
 
 ServiceDescriptor : 描述服务，没怎么用
 
@@ -37,7 +39,7 @@ AddSingleton 单例
 
 ## ASP DI
 
-注册托管服务 : `builder.Services.AddHostedService<Worker>()`
+注册托管服务 :`builder.Services.AddHostedService<Worker>()`
 
 依赖注入 :
 `builder.Services.AddSingleton<IMessageWriter,MessageWriter>()`
