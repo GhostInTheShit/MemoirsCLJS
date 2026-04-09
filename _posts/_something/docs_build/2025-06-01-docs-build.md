@@ -4,6 +4,8 @@ categories: something
 
 # 文档的构建
 
+**现已改成markdown**
+
 此文档建设用到的技术
 
 ## github创建项目
