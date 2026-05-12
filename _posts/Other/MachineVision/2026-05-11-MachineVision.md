@@ -1,0 +1,5 @@
+---
+categories: MachineVision
+---
+
+# MachineVision
