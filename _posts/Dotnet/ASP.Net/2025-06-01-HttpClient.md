@@ -17,3 +17,8 @@ IHttpClientFactory 要使用容器,如果不适用容器就是一个空壳.
 `serviceCollection.AddHttpClient();` 开启HttpClient功能.
 
 
+## 解析
+
+一般为JSON
+
+VS 编辑 选择性粘贴 讲JSON粘贴为类 **属性区分大小写**
