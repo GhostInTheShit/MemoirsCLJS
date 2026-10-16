@@ -14,7 +14,7 @@ middleware 1->middleware 2->middleware 3->middleware 2->middleware 1
 **可以选择终止和继续发送到下一个中间件**
 
 ```C#
-app.Use(async (HttpContext context, RequestDelegate next) =>
+pipeBuilder.Use(async (HttpContext context, RequestDelegate next) =>
 {
     //before logic  
     await next(Context);//可以不调用  
@@ -80,7 +80,7 @@ app.Map("/test", async pipeBuilder =>
 >[!warning]
 >一般不要在中间件中Write,除了最终中间件,会引起报文混乱.这里为教学演示.
 
-### app.UseWhen()
+## app.UseWhen()
 
 满足条件下,开启的中间件
 
@@ -100,12 +100,44 @@ app.UseWhen(
 ```
 
 
-## 自定义中间件
+## 中间件类
 
 ``` CSharp
 /// Program.cs
 /// 启动中间件
-app.UseMiddleware<>();
+app.UseMiddleware<YourMiddleWare>();
+```
+
+### 普通类方法(主流方法)
+
+```C#
+//要有一个构造方法,并且至少有一个参数接收RequestDelegate
+//有一个Invoke或者InvokeAsync方法(名字不能错),参数接收HttpContext
+public class HelloCustomMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public HelloCustomMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task Invoke(HttpContext context)
+    {
+        await context.Response.WriteAsync("HelloCustomMiddleware start<br/>");
+        await next.Invoke(context);
+        await context.Response.WriteAsync("HelloCustomMiddleware end<br/>");
+    }
+}
+
+//创建扩展
+public static class HelloCustomMiddlewareExtensions
+{
+    public static IApplicationBuilder UseHelloCustomMiddleware(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<HelloCustomMiddleware>();  
+    }
+}
 ```
 
 ### 接口方法(老方法，现不推荐使用)
@@ -131,39 +163,7 @@ public static class CustomMiddlewareExtension
 }
 ```
 
-### 普通类方法(主流方法)
 
-```C#
-//直接构造器接收next,方法接收context.
-public class HelloCustomMiddleware
-{
-    private readonly RequestDelegate _next;
-
-    public HelloCustomMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
-    public async Task Invoke(HttpContext context)
-    {
-        if (context.Request.Query.ContainsKey("firstname")&& context.Request.Query.ContainsKey("lastname"))
-        {
-            string fullName= context.Request.Query["firstname"]+""+ context.Request.Query["lastname"];
-            await context.Response.WriteAsync(fullName);
-        }
-        await _next(context);
-    }
-}
-
-//创建扩展
-public static class HelloCustomMiddlewareExtensions
-{
-    public static IApplicationBuilder UseHelloCustomMiddleware(this IApplicationBuilder builder)
-    {
-        return builder.UseMiddleware<HelloCustomMiddleware>();  
-    }
-}
-```
 
 ### 中间件启用顺序
 
