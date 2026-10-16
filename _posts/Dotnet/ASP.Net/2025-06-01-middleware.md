@@ -10,15 +10,8 @@ categories: ASP.net
 执行顺序  
 middleware 1->middleware 2->middleware 3->middleware 2->middleware 1
 
-
-
-## Base
-
-**仅在受到请求时执行**
-
-### app.Use()
-
-使用中间件
+## app.Use()  
+**可以选择终止和继续发送到下一个中间件**
 
 ```C#
 app.Use(async (HttpContext context, RequestDelegate next) =>
@@ -34,18 +27,58 @@ app.Use(async (HttpContext context, RequestDelegate next) =>
 >app.Use(context,next)  
 >那么一定要写await next(Context);因为Use有多个重载，它无法推断是哪个,写了他就能推断。
 
-**可以选择终止和继续发送到下一个中间件**
+## app.Run() 
 
-### app.Run() 
-
-终结中间件
-
-**不会将请求转发到后续中间件** ,会在`app.Use()`执行完后执行,不像是个中间件,而是个终结件.
-
-有一个参数的委托，参数是一个 HttpContext 对象 并且返回 Task
-
+终结中间件,最后的中间件,**不会将请求转发到后续中间件**.
+```C#
+pipeBuilder.Run(async ctx =>
+{
+    await ctx.Response.WriteAsync("hello middleware<br/>");
+});
+```
 app.UseRewriter(new RewriteOptions().AddRedirect(\"history\",\"about\"))  
 将histroy 重定向到 about **重定向会发送一个新的请求**
+
+
+## app.Map()
+```C#
+//以/test的请求
+app.Map("/test", async pipeBuilder =>
+{
+    //中间件1
+    pipeBuilder.Use(async (context, next) =>
+    {
+        //前执行
+        context.Response.ContentType = "text/html";
+        await context.Response.WriteAsync("1 Start<br/>");
+        //转入下一个中间件
+        await next.Invoke();
+        //后执行
+        await context.Response.WriteAsync("1 End<br/>");
+    });
+    //中间件2
+    pipeBuilder.Use(async (context, next) =>
+    {
+        await context.Response.WriteAsync("2 Start<br/>");
+        await next.Invoke();
+        await context.Response.WriteAsync("2 End<br/>");
+    });
+    //最终中间件,后面再添加的中间件也不会执行
+    pipeBuilder.Run(async ctx =>
+    {
+        await ctx.Response.WriteAsync("hello middleware<br/>");
+    });
+});
+
+// out
+// 1 Start
+// 2 Start
+// hello middleware
+// 2 End
+// 1 End
+```
+>[!warning]
+>一般不要在中间件中Write,除了最终中间件,会引起报文混乱.这里为教学演示.
 
 ### app.UseWhen()
 
