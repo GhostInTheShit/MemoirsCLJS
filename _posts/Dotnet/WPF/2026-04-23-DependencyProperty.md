@@ -5,43 +5,58 @@ VS `propdb`
 
 可以在xaml中智能提示,而且只带UI渲染监听.
 
+支持绑定
+
+自定义 扩展控件属性
+ 
+验证 回调
+
+附加属性(特殊的依赖属性)
+
 ```cs
-//有了一个公共属性，在xaml中其实就可以显示了,但是只是一个普通的.net属性，无法显示类型和智能提示
-public SolidColorBrush TBrush
+public class MyDependencyOb : UIElement
 {
-    get { return (SolidColorBrush)GetValue(TBrushProperty); }
-    set { SetValue(TBrushProperty, value); }
+    //包装
+    public int Age
+    {
+        get { return (int)GetValue(AgeProperty); }
+        set { SetValue(AgeProperty, value); }
+    }
+
+    //声明,注册
+    public static readonly DependencyProperty AgeProperty =
+        //注册名(Xaml中的属性名),属性的类型,属于谁,[optional] 元素据(默认值,值改变回调,强制回调),[optional] 验证回调
+        DependencyProperty.Register(nameof(Age), typeof(int), typeof(MyDependencyOb), new PropertyMetadata(0,OnAgeChangedBack,OnCoerceBack),new ValidateValueCallback(OnValidAgeBack));
+
+    //属性值改变回调,三个回调只有这个常用
+    private static void OnAgeChangedBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        Console.WriteLine($"Age changed from {e.OldValue} to {e.NewValue}");
+    }
+
+    //强制回调
+    private static object OnCoerceBack(DependencyObject d, object baseValue)
+    {
+        int age = (int)baseValue;
+        if (age == 100) return 95;
+        return age;
+    }
+
+    //验证回调
+    //在Xaml中就会提示正确与否
+    private static bool OnValidAgeBack(object value)
+    {
+        int age = (int)value;
+        if (age > 200) return false;
+        return true;
+    }
 }
-
-//有了DependencyProperty注册，在xaml中就会通过反射提示类型.
-public static readonly DependencyProperty TBrushProperty = DependencyProperty.Register(
-    nameof(TBrush),
-    typeof(SolidColorBrush),
-    typeof(Thermometer),
-    //默认值
-    new PropertyMetadata(new SolidColorBrush(Colors.White))
-);
 ```
->[!warning]
->在xaml中直接赋值的依赖属性，不会经过Set,而是直接调用SetValue(dbp,value),它直接操作那个注册的依赖属性.
 
-依赖属性的changed回调。
+>[!Warning]
+>框架设置依赖属性的时候,直接调用DependencyObject.SetValue(),不经过自己写的set{}访问器.
 
 ```C#
-public int CurrentValue
-{
-    get { return (int)GetValue(CurrentValueProperty); }
-    set { SetValue(CurrentValueProperty, value); }
-}
-
-public static readonly DependencyProperty CurrentValueProperty = DependencyProperty.Register(
-    nameof(CurrentValue),
-    typeof(int),
-    typeof(Thermometer),
-    //这里可以传入回调函数
-    new PropertyMetadata(0, CurrentValueChange));
-
-//因为是在static里面注册的所以也要用static方法.
 private static void CurrentValueChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
 {
     //static里面没法直接使用实例属性.这里提供了一个参数传递
@@ -52,6 +67,52 @@ private static void CurrentValueChange(DependencyObject d, DependencyPropertyCha
     }
 }
 ```
+
+## 依赖继承
+
+父类注册,子类添加owner.
+
+```C#
+//父类
+public class InheritedDependencyOb : Panel
+{
+    public string MyName
+    {
+        get { return (string)GetValue(MyNameProperty); }
+        set { SetValue(MyNameProperty, value); }
+    }
+
+    //注册依赖属性,最后一个元数据填FrameworkPropertyMetadata
+    public static readonly DependencyProperty MyNameProperty =
+        DependencyProperty.Register(nameof(MyName), typeof(string), typeof(InheritedDependencyOb), new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.Inherits));
+}
+```
+
+```C#
+//子类
+public class InheritDependencyOb : Panel
+{
+    public string MyName
+    {
+        get { return (string)GetValue(MyNameProperty); }
+        set { SetValue(MyNameProperty, value); }
+    }
+
+    //挂载到父类的依赖属性上(在父类的依赖属性上添加自己使用权)
+    public static readonly DependencyProperty MyNameProperty =
+        InheritedDependencyOb.MyNameProperty.AddOwner(typeof(InheritDependencyOb),new FrameworkPropertyMetadata("",FrameworkPropertyMetadataOptions.Inherits));
+}
+```
+
+```xml
+<StackPanel>
+    <local:InheritedDependencyOb MyName="Bob">
+        <local:InheritDependencyOb x:Name="inheritDependencyOb"></local:InheritDependencyOb>
+    </local:InheritedDependencyOb>
+    <TextBlock Text="{Binding ElementName=inheritDependencyOb, Path=MyName}"></TextBlock>
+</StackPanel>
+```
+输出Bob
 
 ## 只读依赖属性
 
