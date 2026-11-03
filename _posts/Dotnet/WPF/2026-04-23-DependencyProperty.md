@@ -70,7 +70,10 @@ private static void CurrentValueChange(DependencyObject d, DependencyPropertyCha
 
 ## 依赖继承
 
-父类注册,子类添加owner.
+父类注册,子类添加owner.  
+
+`PropertyMetadata`换成`FrameworkPropertyMetadata`  
+
 
 ```C#
 //父类
